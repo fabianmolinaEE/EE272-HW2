@@ -118,10 +118,11 @@ module systolic_array
       assign ofmap_w[x][0] = ofmap_in[x];
   endgenerate
 
-  // MAC array
+  
+  // generate MAC units and connect them using the wires declared above
   generate
-    for (x = 0; x < ARRAY_WIDTH; x = x + 1) begin: gen_x
-      for (y = 0; y < ARRAY_HEIGHT; y = y + 1) begin: gen_y
+    for (x = 0; x < ARRAY_WIDTH; x = x + 1) begin: mac_gen_x 
+      for (y = 0; y < ARRAY_HEIGHT; y = y + 1) begin: mac_gen_y
         mac mac_inst (
           .clk(clk),
           .rst_n(rst_n),
@@ -134,7 +135,7 @@ module systolic_array
           .ofmap_out(ofmap_w[x][y+1]),
 
           .weight_in(weight_in_skewed[x]),
-          .weight_en(weight_wen_w[x][y])
+          .weight_wen(weight_wen_w[x][y])
         );
       end
     end
